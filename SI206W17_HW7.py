@@ -9,7 +9,7 @@ import twitter_info # still need this in the same directory, filled out
 
 ## Make sure to comment with:
 # Your name: Michael Kim 
-# The names of any people you worked with for this assignment:
+# The names of any people you worked with for this assignment: None
 
 # ******** #
 ### Useful resources for this HW:
@@ -46,7 +46,7 @@ try:
 	cache_file.close()
 	CACHE_DICTION = json.loads(cache_contents)
 except:
-	CACHE_DICTION = {}
+	CACHE_DICTION = {} 
 
 ## [PART 1]
 
@@ -55,11 +55,16 @@ except:
 # Your function must cache data it retrieves and rely on a cache file!
 # Note that this is a lot like work you have done already in class (but, depending upon what you did previously, may not be EXACTLY the same, so be careful your code does exactly what you want here).
 def get_user_tweets(handle):
-	if handle in CACHE_DICTION:
-		return CACHE_DICTION[handle]
+	unique_identifier = "twitter_{}".format(handle) 
+	if unique_identifier in CACHE_DICTION:
+		return CACHE_DICTION[unique_identifier]
 	else:
-		return api.user_timeline(screen_name = handle)
-
+		twitter_results = api.user_timeline(handle) 
+		CACHE_DICTION[unique_identifier] = twitter_results		
+		cache= open(CACHE_FNAME,'w')
+		cache.write(json.dumps(CACHE_DICTION, indent=2))
+		cache.close()
+	return CACHE_DICTION[unique_identifier]
 
 # Write code to create/build a connection to a database: tweets.db,
 # And then load all of those tweets you got from Twitter into a database table called Tweets, with the following columns in each row:
@@ -137,12 +142,8 @@ cur.execute(query)
 retweet = cur.fetchall()
 first_rt = retweet[0][0]
 
-
-
 # Finally, done with database stuff for a bit: write a line of code to close the cursor to the database.
 conn.close()
-
-
 
 ## [PART 3] - Processing data
 
