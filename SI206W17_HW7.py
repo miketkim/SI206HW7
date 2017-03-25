@@ -96,8 +96,6 @@ cur.execute(table_spec)
 umsi_tweets = get_user_tweets("umsi")
 
 
-
-
 # Use a for loop, the cursor you defined above to execute INSERT statements, that insert the data from each of the tweets in umsi_tweets into the correct columns in each row of the Tweets database table.
 
 # (You should do nested data investigation on the umsi_tweets value to figure out how to pull out the data correctly!)
